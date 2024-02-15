@@ -6,5 +6,6 @@ from src.database import AbstractDAO
 
 class UserDAO(AbstractDAO):
     async def get_by_username(self, username):
-        result = await self.session.execute(select(User).where(User.username == username))
+        stmt = select(User).where(User.username == username)
+        result = await self.session.execute(stmt)
         return result.scalar()

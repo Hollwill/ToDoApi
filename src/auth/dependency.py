@@ -12,7 +12,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 
 async def get_user(username: str, users: UserDAO):
-    return await users.get_by_username(username)
+    async with users:
+        return await users.get_by_username(username)
 
 
 async def fake_decode_token(token, users):

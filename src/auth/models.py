@@ -1,5 +1,5 @@
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
 
@@ -11,3 +11,4 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255))
     hashed_password: Mapped[str] = mapped_column(String(255))
     disabled: Mapped[bool] = mapped_column(default=False)
+    todo_lists: Mapped[list["TodoList"]] = relationship(back_populates="user") # noqa

@@ -18,15 +18,16 @@ async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
 
 @router.post("/token")
 async def login(users: Annotated[UserDAO, Depends()], form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    user = await users.get_by_username(form_data.username)
-    if not user:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    # TODO: hashed_password = fake_hash_password(form_data.password)
-    hashed_password = form_data.password
-    if not hashed_password == user.hashed_password:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    async with users:
+        user = await users.get_by_username(form_data.username)
+        if not user:
+            raise HTTPException(status_code=400, detail="Incorrect username or password")
+        # TODO: hashed_password = fake_hash_password(form_data.password)
+        hashed_password = form_data.password
+        if not hashed_password == user.hashed_password:
+            raise HTTPException(status_code=400, detail="Incorrect username or password")
 
-    return {"access_token": user.username, "token_type": "bearer"}
+        return {"access_token": user.username, "token_type": "bearer"}
 
 @router.get("/users/me")
 async def read_users_me(
