@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./ql_app.db"
+SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./test_app.db"
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
 
 engine = create_async_engine(
@@ -10,6 +10,11 @@ engine = create_async_engine(
 SessionLocal = async_sessionmaker(bind=engine)
 
 Base = declarative_base()
+
+
+# async def init_db():
+#     async with engine.begin() as conn:
+#         await conn.run_sync(Base.metadata.create_all)
 
 
 class AbstractDAO:
